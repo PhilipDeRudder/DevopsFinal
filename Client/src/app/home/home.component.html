@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <body>
+
+<h1>Albums page</h1>
+
+<div class="row">
+  <div class="col-md-6">
+
+    <div class="card">
+      <div class="card-header">
+       <h2>Create --> Add album </h2> 
+      </div>
+      <div class="card-body">
+        <form>
+        <table class="table table-bordered">
+          <tr>
+            <td>Title</td>
+            <td>
+              <input asp-for="title" #title class="form-control" type="text" placeholder="title">
+              <span asp-validation-for="title" class="text-danger"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>Genre</td>
+            <td>
+                <input #genre type="text" class="form-control" type="text"  placeholder="genre">
+            </td>
+          </tr>
+          <tr>
+            <td>ArtistID</td>
+            <td> 
+                <input class="form-control" type="number" #artistid placeholder="artistId">
+            </td>
+          </tr>
+          <tr>
+            <td>Release Date</td>
+            <td style="height: 50px;"> 
+                <input style="height: 50px;" class="form-control" type="date" #releaseDate placeholder="releasedate">
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <button class="btn btn-success"  (click)="PostAlbum(title.value,genre.value ,artistid.value, releaseDate.value)" >Add Album</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+       <h2>Create --> Add Artist </h2> 
+      </div>
+      <div class="card-body">
+        <form>
+        <table class="table table-bordered">
+          <tr>
+            <td>Name</td>
+            <td>
+              <input asp-for="title" #arName class="form-control" type="text" placeholder="name">
+              <span asp-validation-for="title" class="text-danger"></span>
+            </td>
+          </tr>
+       
+          <tr>
+            <td>
+                <button class="btn btn-success"  (click)="PostArtist(arName.value)" >Add Artist</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+      <div class="card">
+          <div class="card-header">
+           <h2>Read -> get All albums</h2> 
+            <button type="button" class="btn btn-warning" (click)="GetAllAlbums()">Get All Albums</button>
+          </div>
+          <div class="table-wrapper-scroll-y my-custom-scrollbar">
+              
+            <table class="table table-bordered table-striped mb-0">
+              <tr>
+                <th scope="col">Album Name</th>
+                <th scope="col">Genre </th>
+                <th scope="col">Id number</th>
+                <th scope="col">Artist Id</th>
+              </tr>
+              <tr *ngFor="let rec of Albums$">
+                <td>{{rec.title}}</td>
+                <td>{{rec.genre}}</td>
+                <td>{{rec.albumId}}</td>
+                <td>{{rec.artistId}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+    
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+      <div class="card">
+          <div class="card-header">
+            <h2>Update Album by id</h2>
+          </div>
+          <div class="card-body">
+            <form>
+            <table class="table table-bordered">
+              <tr>
+                <td>Title</td>
+                <td>
+                  <input type="text" #utitle  class="form-control" placeholder="title">
+                </td>
+              </tr>
+              <tr>
+                <td>Genre</td>
+                <td>
+                    <input type="text" #ugenre  class="form-control" placeholder="genre">
+                </td>
+              </tr>
+              <tr>
+                <td>Album Id</td>
+                <td> 
+                    <input type="number" #ualbumid class="form-control" placeholder="albumId">
+                </td>
+              </tr>
+              <tr>
+                <td>Artist Id</td>
+                <td> 
+                    <input type="number" #uartistId class="form-control" placeholder="artistId">
+                </td>
+              </tr>
+              <tr>
+                <td>Release Date </td>
+                <td style="height: 50px;"> 
+                    <input style="height: 50px;" type="date" #ureleaseDate class="form-control" placeholder="ureleasedate">
+                </td>
+              </tr>
+              <tr>
+                <tr>
+                <td></td>
+                <td>
+                    <button type="button" (click)="UpdateAlbum(utitle.value, ugenre.value , ualbumid.value, ureleaseDate.value, uartistId.value)" class="btn btn-info">Update method</button>
+                </td>
+              </tr>
+            </table>
+          </form>
+          </div>
+        </div>
+    
+  </div>
+  <div class="col-md-6">
+      <div class="card">
+          <div class="card-header">
+           <h2>Delete Album by Id</h2> 
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered">
+              <tr>
+                <td>Id</td>
+                <td>
+                  <input type="number"  class="form-control"  #albumId  placeholder="Album Id">
+                </td>
+              </tr>
+              
+              <tr>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)= "DeleteAlbum(albumId.value)" >Delete Album</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+    
+  </div>
+</div>
+<!--paging test-->
+<div class="col-md-6">
+  <div class="card">
+      <div class="card-header">
+        <h2>Read, Sorting, Paging</h2>
+        
+      </div>
+      <div >
+        <button type="button"  class="btn btn-warning" (click)="GetAlbumsPaging(0)">Get Albums</button>
+        aantal items per pagina:
+        <select [(ngModel)] = "itemsperpage" (change)="GetAlbumsPaging(0)">
+          <option *ngFor="let amount of ItemsPerPage$" [ngValue]="amount">{{amount}}</option>
+        </select>
+        <table class="table table-bordered table-striped mb-0">
+          <tr>
+            <th (click)="GetAlbumsPaging(3)" scope="col">Album Name</th>
+            <th scope="col">Genre </th>
+            <th scope="col">Id number</th>
+            <th scope="col">Artist Id</th>
+            <th scope="col">Release Date</th>
+          </tr>
+          <tr *ngFor="let rec of Albums$">
+
+            <td>{{rec.title}}</td>
+            <td>{{rec.genre}}</td>
+            <td>{{rec.albumId}}</td>
+            <td>{{rec.artistId}}</td>
+            <td>{{rec.release_date | date:'dd/MM/yyy'}}</td>
+            <td>
+              <button type="button" class="btn btn-warning" (click)="GetAlbumById(rec.albumId); GetAlbumCover(rec.title)" >get selected</button>
+            </td>
+          </tr>
+        </table>
+        
+      </div>
+     
+      <button type="button" [disabled]="isNextValid()" class="btn btn-warning" (click)="GetAlbumsPaging(1); ">NEXT</button>
+      <button type="button" [disabled]="isPreviousValid()" class="btn btn-warning" (click)="GetAlbumsPaging(2)">BACK</button>
+
+    </div>
+
+</div>
+<h1> Result get selected from table</h1>
+<p>album id :  {{AlbumSelectedById$.albumId}}</p>
+<p>album genre : {{AlbumSelectedById$.genre}}</p>
+<p>album title: {{AlbumSelectedById$.title}}</p>
+<p> album artist : {{AlbumSelectedById$.artistId}}</p>
+<p>cover photo</p>
+<img src={{Acover[0].thumbnail}}> 
+<div>
+
+ 
+</div>
+
+
+<!--searching test-->
+<div class="col-md-6">
+  <div class="card">
+      <div class="card-header">
+       <h2>Search Album By Genre</h2> 
+        
+      </div>
+      <div >
+        <form >
+        <input [(ngModel)]="albumSearch$" type="text" placeholder="Search.." name="search">
+        <button (click)="GeAlbumByAlbumGenre()" type="button"  class="btn btn-warning">SEARCH </button>
+      </form>
+
+        <table class="table table-bordered table-striped mb-0">
+          <tr>
+            <th scope="col">Album Name</th>
+            <th scope="col">Genre </th>
+            <th scope="col">Id number</th>
+            <th scope="col">Artist Id</th>
+            <th scope="col">Release Date</th>
+          </tr>
+          <tr *ngFor="let rec of AlbumsSelectByGenre$">
+
+            <td>{{rec.title}}</td>
+            <td>{{rec.genre}}</td>
+            <td>{{rec.albumId}}</td>
+            <td>{{rec.artistId}}</td>
+            <td>{{rec.release_date}}</td>
+            <td>
+              <button type="button" class="btn btn-warning" (click)="GetAlbumById(rec.albumId); GetAlbumCover(rec.title)">get selected</button>
+            </td>
+          </tr>
+        </table>
+        
+      </div>
+    </div>
+</div>
+
+<!-- selected shizzle-->
+<div class="col-md-6"> 
+<h2> Select Artist --> get Albums --> Select Album --> get Tracks</h2>
+<div>
+  <h2>Artist</h2>
+<select (change)="GetSelectedArtist(); GetAlbumByArtistId()" [(ngModel)]= "selectedArtist" style="margin-right: 20px;">
+  <option *ngFor=" let rec of Artist$" [ngValue]="rec.id">{{rec.id}}: {{rec.artistname}}</option>
+</select>
+</div>
+<div>
+<h2>Albums</h2>
+<select >
+  <option *ngFor="let rec of AlbumSelectedByArtistId$">{{rec.title}}</option>
+</select>
+</div>
+<div>
+<h2>Tracks</h2>
+<select >
+  <option *ngFor="let rec of AlbumSelectedByArtistId$">{{rec.title}}</option>
+</select>
+</div>
+</div>
+
+<router-outlet></router-outlet>
