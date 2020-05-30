@@ -15,6 +15,15 @@ pipeline {
            
          }
       }
+      
+      /*
+        stage('Testing...') {
+         steps {
+            echo 'testing application'
+           sh 'npm run "test --browsers FirefoxHeadless"'
+         }
+      }
+      */
      
      stage('build') {
          steps {
@@ -30,5 +39,24 @@ pipeline {
          }
       }
    }
+   post {
+        success {
+            echo 'success!'
+            
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+        
+        failure {
+            echo 'failure'
+            
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+    }
 }
 
